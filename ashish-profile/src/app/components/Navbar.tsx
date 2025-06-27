@@ -10,13 +10,13 @@ const navLinks = [
 export default function Navbar() {
   const [open, setOpen] = useState(false)
   return (
-    <nav className="bg-black/70 shadow-sm sticky top-0 z-50 backdrop-blur-md">
+    <nav className="bg-black/40 shadow-sm sticky top-0 z-50 backdrop-blur-md">
       <div className="max-w-5xl mx-auto px-4 sm:px-8">
         <div className="flex justify-between items-center py-4">
           <span className="font-bold text-xl font-serif tracking-tight text-white">Never Settle</span>
           <div className="hidden md:flex gap-6">
             {navLinks.map(({ label, href }) => (
-              <Link key={label} href={href} className="font-serif text-lg text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-neutral-200 hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-200">{label}</Link>
+              <Link key={label} href={href} className="font-serif text-lg text-white px-4 py-2 rounded-lg transition-all duration-200 hover:bg-neutral-50 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200">{label}</Link>
             ))}
           </div>
           <button className="md:hidden flex items-center p-2 rounded focus:outline-none focus:ring-2 focus:ring-gray-200" aria-label="Open navigation menu" onClick={() => setOpen(!open)}>

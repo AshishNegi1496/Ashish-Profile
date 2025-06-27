@@ -35,7 +35,7 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: 'url("/images/bg.jpg")' }} />
         <div className="absolute inset-0 bg-white/30 backdrop-blur-xs" />
         <div className="relative z-10 flex flex-col items-center w-full">
-          <h1 className="heading-1 text-white flex gap-1">
+          <h1 className="heading-1 text-white flex gap-1 mb-10 text-white/90 tracking-tight">
             {letters.map((char, index) => (
               <span
                 key={index}
