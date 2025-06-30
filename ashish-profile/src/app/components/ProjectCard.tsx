@@ -1,17 +1,64 @@
-type ProjectCardProps = {
+// src/app/components/ProjectCard.tsx
+'use client';
+
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  CardHeader,
+  Box,
+  Button
+} from '@mui/material';
+
+export type ProjectCardProps = {
   title: string;
   image: string;
   description: string;
+  showKnowMore?: boolean;
+  onKnowMoreClick?: () => void;
 };
 
-export default function ProjectCard({ title, image, description }: ProjectCardProps) {
+export default function ProjectCard({
+  title,
+  image,
+  description,
+  showKnowMore = false,
+  onKnowMoreClick,
+}: ProjectCardProps) {
   return (
-    <div className="bg-white rounded-xl shadow hover:shadow-lg transition-shadow overflow-hidden">
-      <img src={image} alt={title} className="w-full h-48 object-cover" />
-      <div className="p-6">
-        <h2 className="font-serif text-xl mb-2">{title}</h2>
-        <p className="text-neutral-600">{description}</p>
-      </div>
-    </div>
-  )
+    <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <CardMedia
+        component="img"
+        image={image}
+        alt={title}
+        sx={{ height: 200, objectFit: 'cover' }}
+         onError={(e: any) => {
+    if (e.target.src !== window.location.origin + '/images/fallback.jpg') {
+      e.target.src = '/images/fallback.jpg';
+    }
+  }}
+      />
+      <CardHeader
+        title={
+          <Typography variant="h6" sx={{ fontFamily: 'serif', fontWeight: 600 }}>
+            {title}
+          </Typography>
+        }
+      />
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ minHeight: 60 }}>
+          {description.length > 120 ? description.slice(0, 117) + '...' : description}
+        </Typography>
+
+        {showKnowMore && (
+          <Box className="text-right mt-4">
+            <Button variant="outlined" size="small" onClick={onKnowMoreClick}>
+              Know More
+            </Button>
+          </Box>
+        )}
+      </CardContent>
+    </Card>
+  );
 }
