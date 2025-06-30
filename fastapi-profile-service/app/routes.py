@@ -6,7 +6,7 @@ from app.schemas import profile_helper
 from bson import ObjectId
 
 # Change this line
-router = APIRouter(prefix="/profiles", tags=["Profiles"])
+router = APIRouter(prefix="/api/profiles", tags=["Profiles"])
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED)

@@ -28,9 +28,9 @@ export default function ProjectsPage() {
   if (error) return <p className="text-center text-red-500">Failed to load projects.</p>;
 
   return (
-    <section className="max-w-7xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-serif mb-4 text-left">Projects</h1>
-        <h2 className="text-sm font-serif mb-8 text-left">A selection of my recent  projects, showcasing my skills and experience in development.</h2>
+    <section className="bg-white max-w-7xl mx-auto px-4 py-12">
+      <h1 className="text-3xl font-serif mb-4 text-left text-black">Projects</h1>
+        <h2 className="text-sm font-serif mb-8 text-left text-black">A selection of my recent  projects, showcasing my skills and experience in development.</h2>
       <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         {projects?.map((p) => {
           const resolvedImage = p.imageUrl?.startsWith('/')

@@ -9,7 +9,7 @@ export const fetcher = async (url: string) => {
 import { useEffect, useState } from "react";
 
 export const fastApiFetcher = async (url: string) => {
-  const res = await fetch(`http://localhost:8000${url}`);
+  const res = await fetch(`http://localhost:8000/api${url}`);
   if (!res.ok) throw new Error("Failed to fetch");
   return res.json();
 };
