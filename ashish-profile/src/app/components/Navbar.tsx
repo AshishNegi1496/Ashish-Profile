@@ -45,7 +45,7 @@ export default function Navbar() {
             <Avatar
               alt={profile?.name || "Ashish Negi"}
               src={
-                profile?.avatar ||
+                // profile?.avatar ||
                 "NA"
               }
               sx={{ width: 40, height: 40, ml: 4 }}

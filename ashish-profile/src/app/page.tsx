@@ -10,10 +10,12 @@ import EmailIcon from "@mui/icons-material/Email";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { log } from "console";
 
 export default function HomePage() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const { profiles, loading } = useProfiles();
+ console.log("Profiles:", profiles);
   const profile = profiles?.[0] || null;
   const name = profile?.name || "Ashish Negi";
   const letters = name.split("");
@@ -32,7 +34,9 @@ export default function HomePage() {
             <div
               className="w-full min-w-[220px] max-w-[400px] aspect-[16/9] rounded-xl mx-auto"
               style={{
-                backgroundImage: `url("${profile?.avatar || "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"}")`,
+                backgroundImage: `url("${
+                  // profile?.profileImage || 
+                  "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"}")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",

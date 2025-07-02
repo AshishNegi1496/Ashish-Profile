@@ -18,6 +18,13 @@ export type Profile = {
   id: number
   name: string
   email: string
+   github?: string;
+  linkedin?: string;
+  location?: string;
+  phone?: string;
+  position?: string;
+  profileImage?: string; 
+  summary?: string;
 };
 
 export function useProfiles() {
