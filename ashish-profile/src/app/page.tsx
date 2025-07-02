@@ -10,7 +10,6 @@ import EmailIcon from "@mui/icons-material/Email";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { log } from "console";
 
 export default function HomePage() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
