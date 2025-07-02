@@ -1,9 +1,9 @@
 type GalleryItemProps = {
-  src: string;
+  // src: string;
   title: string;
 };
 
-export default function GalleryItem({ src, title }: GalleryItemProps) {
+export default function GalleryItem({ title }: GalleryItemProps) {
   return (
     <div className="relative group rounded-xl overflow-hidden shadow">
       {/* <img src={src} alt={title} className="w-full h-48 object-cover group-hover:scale-105 transition-transform" /> */}

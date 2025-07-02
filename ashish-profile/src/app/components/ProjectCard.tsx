@@ -28,17 +28,18 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   return (
     <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <CardMedia
-        component="img"
-        image={image}
-        alt={title}
-        sx={{ height: 200, objectFit: 'cover' }}
-         onError={(e: any) => {
-    if (e.target.src !== window.location.origin + '/images/fallback.jpg') {
-      e.target.src = '/images/fallback.jpg';
+<CardMedia
+  component="img"
+  image={image}
+  alt={title}
+  sx={{ height: 200, objectFit: 'cover' }}
+  onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    const target = e.target as HTMLImageElement;
+    if (target.src !== window.location.origin + '/images/fallback.jpg') {
+      target.src = '/images/fallback.jpg';
     }
   }}
-      />
+/>
       <CardHeader
         title={
           <Typography variant="h6" sx={{ fontFamily: 'serif', fontWeight: 600 }}>
