@@ -14,8 +14,14 @@ export const fastApiFetcher = async (url: string) => {
   return res.json();
 };
 
+export type Profile = {
+  id: number
+  name: string
+  email: string
+};
+
 export function useProfiles() {
-  const [profiles, setProfiles] = useState<any[]>([]);
+  const [profiles, setProfiles] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

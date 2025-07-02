@@ -1,9 +1,8 @@
-import GalleryItem from '../../app/components/GalleryItem'
 
-const photos = [
-  { src: '/images/photo1.jpg', title: 'Mountain Hike' },
-  { src: '/images/photo2.jpg', title: 'City Lights' },
-]
+// const photos = [
+//   { src: '/images/photo1.jpg', title: 'Mountain Hike' },
+//   { src: '/images/photo2.jpg', title: 'City Lights' },
+// ]
 
 export default function GalleryPage() {
   return (

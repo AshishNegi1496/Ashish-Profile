@@ -2,24 +2,23 @@
 import { useState } from 'react'
 
 export default function ContactForm() {
-interface ContactFormState {
+  interface ContactFormState {
     name: string
     email: string
     message: string
-}
+  }
 
-interface ContactFormEvent extends React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> {}
+  const [form, setForm] = useState<ContactFormState>({ name: '', email: '', message: '' })
 
-const [form, setForm] = useState<ContactFormState>({ name: '', email: '', message: '' })
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm({ ...form, [e.target.name]: e.target.value })
 
-const handleChange = (e: ContactFormEvent) => setForm({ ...form, [e.target.name]: e.target.value })
-interface HandleSubmitEvent extends React.FormEvent<HTMLFormElement> {}
-
-const handleSubmit = (e: HandleSubmitEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     alert('Message sent!')
     setForm({ name: '', email: '', message: '' })
-}
+  }
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4 bg-white/80 p-6 rounded-xl shadow">
       <input name="name" placeholder="Name" value={form.name} onChange={handleChange} required className="p-3 rounded border" />
