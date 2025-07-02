@@ -38,7 +38,7 @@ export default function Navbar() {
               <Link
                 key={label}
                 href={href}
-                className="font-serif text-lg text-gray-900 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-900 hover:text-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                className="font-serif text-lg text-gray-900 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-100 hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-900"
               >
                 {label}
               </Link>
