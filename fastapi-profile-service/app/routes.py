@@ -1,19 +1,17 @@
-# app/routes.py
 from fastapi import APIRouter, HTTPException, status
 from app.models import Profile
 from app.database import profile_collection
 from app.schemas import profile_helper
 from bson import ObjectId
+from fastapi.encoders import jsonable_encoder
 
-# Change this line
 router = APIRouter(prefix="/api/profiles", tags=["Profiles"])
-
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
 def create_profile(profile: Profile):
-    result = profile_collection.insert_one(profile.dict())
+    encoded_profile = jsonable_encoder(profile) 
+    result = profile_collection.insert_one(encoded_profile)
     return {"id": str(result.inserted_id)}
-
 @router.get("/{id}")
 def get_profile(id: str):
     profile = profile_collection.find_one({"_id": ObjectId(id)})
@@ -23,8 +21,7 @@ def get_profile(id: str):
 
 @router.get("/")
 def list_profiles():
-    profiles = profile_collection.find()
-    return [profile_helper(p) for p in profiles]
+    return [profile_helper(p) for p in profile_collection.find()]
 
 @router.put("/{id}")
 def update_profile(id: str, updated: Profile):

@@ -1,6 +1,25 @@
-# app/models.py
-from pydantic import BaseModel, Field
-from typing import Optional
+from pydantic import BaseModel, Field, HttpUrl
+from typing import List, Optional
+
+class Education(BaseModel):
+    degree: str
+    institution: str
+    start_year: int
+    end_year: Optional[int]
+    grade: Optional[str]
+
+class Experience(BaseModel):
+    title: str
+    company: str
+    start_date: str
+    end_date: Optional[str]
+    description: Optional[str]
+
+class Certification(BaseModel):
+    name: str
+    issuer: str
+    issue_date: str
+    credential_url: Optional[HttpUrl]
 
 class Profile(BaseModel):
     name: str
@@ -12,3 +31,11 @@ class Profile(BaseModel):
     linkedin: Optional[str]
     github: Optional[str]
     profileImage: Optional[str]
+    resumeUrl: Optional[HttpUrl]
+
+    # New fields
+    education: Optional[List[Education]] = []
+    experience: Optional[List[Experience]] = []
+    skills: Optional[List[str]] = []
+    certifications: Optional[List[Certification]] = []
+    languages: Optional[List[str]] = []

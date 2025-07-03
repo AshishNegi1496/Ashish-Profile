@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "project")
@@ -19,7 +21,6 @@ public class Project {
     @Column(length = 1000)
     private String description;
 
-    private String keySkills;
 
     private LocalDate startDate;
 
@@ -31,18 +32,34 @@ public class Project {
     @Column(name = "image_url", length = 500)
     private String imageUrl;
 
+    @ManyToMany
+    @JoinTable(
+            name = "project_skills",
+            joinColumns = @JoinColumn(name = "project_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
+    )
+    private Set<Skill> skills = new HashSet<>();
+
     public Project() {
     }
 
-    public Project(Long id, String title, String description, String keySkills, LocalDate startDate, LocalDate endDate, String highlights, String imageUrl) {
+    public Project(Long id, String title, String description, LocalDate startDate, LocalDate endDate, String highlights, String imageUrl, Set<Skill> skills) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.keySkills = keySkills;
         this.startDate = startDate;
         this.endDate = endDate;
         this.highlights = highlights;
         this.imageUrl = imageUrl;
+        this.skills = skills;
+    }
+
+    public Set<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<Skill> skills) {
+        this.skills = skills;
     }
 
     public String getImageUrl() {
@@ -75,14 +92,6 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getKeySkills() {
-        return keySkills;
-    }
-
-    public void setKeySkills(String keySkills) {
-        this.keySkills = keySkills;
     }
 
     public LocalDate getStartDate() {

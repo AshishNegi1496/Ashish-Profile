@@ -1,4 +1,3 @@
-// src/app/components/ProjectCard.tsx
 'use client';
 
 import {

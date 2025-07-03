@@ -2,141 +2,211 @@
 import { useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import Typography from "@mui/material/Typography";
-import { useProfiles } from "./lib/fetcher";
-import Loader from "./components/Loader";
-import AppButton from "./components/AppButton";
+import { Box, Typography, Button, Chip, Stack, IconButton, Paper } from "@mui/material";
+import Grid from "@mui/material/Grid";
 import EmailIcon from "@mui/icons-material/Email";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { useProfiles } from "./lib/fetcher";
+import Loader from "./components/Loader";
+import ProjectCard from "./components/ProjectCard";
+import ReusableDialog from "./components/ReusableDialog";
 
 export default function HomePage() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogContent, setDialogContent] = useState<{ title: string; content: React.ReactNode } | null>(null);
   const { profiles, loading } = useProfiles();
- console.log("Profiles:", profiles);
-  const profile = profiles?.[0] || null;
-  const name = profile?.name || "Ashish Negi";
-  const letters = name.split("");
-  const handleHover = (i: number) => activeIndex === null && (setActiveIndex(i), setTimeout(() => setActiveIndex(null), 500));
+  const profile = profiles?.[0] || {};
+  const name = profile.name || "Ashish Negi";
+
   if (loading) return <Loader />;
-   return (
-    <div className="bg-white min-h-screen">
+
+  const cardData = [
+    {
+      title: "Skills",
+      image: "/images/skills.webp",
+      description: Array.isArray(profile.skills) && profile.skills.length > 0
+        ? profile.skills.slice(0, 5).join(", ") + (profile.skills.length > 5 ? "..." : "")
+        : "No skills listed.",
+      showKnowMore: Array.isArray(profile.skills) && profile.skills.length > 0,
+      content: (
+        <Stack direction="row" spacing={1} flexWrap="wrap" gap={1}>
+          {profile.skills?.map((skill: string, i: number) => (
+            <Chip key={i} label={skill} color="primary" variant="outlined" size="small" />
+          ))}
+        </Stack>
+      ),
+    },
+    {
+      title: "Experience",
+      image: "/images/experience.webp",
+      description: Array.isArray(profile.experience) && profile.experience.length > 0
+        ? profile.experience[0].title + " at " + profile.experience[0].company
+        : "No experience listed.",
+      showKnowMore: Array.isArray(profile.experience) && profile.experience.length > 0,
+      content: (
+        <Stack spacing={2}>
+          {profile.experience?.map((exp: any, i: number) => (
+            <Box key={i}>
+              <Typography fontWeight={700}>{exp.title}</Typography>
+              <Typography variant="body2" color="text.secondary">
+                {exp.company} • {exp.start_date} – {exp.end_date || "Present"}
+              </Typography>
+              {exp.description && <Typography variant="body2">{exp.description}</Typography>}
+            </Box>
+          ))}
+        </Stack>
+      ),
+    },
+    {
+      title: "Certifications",
+      image: "/images/certifications.webp",
+      description: Array.isArray(profile.certifications) && profile.certifications.length > 0
+        ? profile.certifications[0].name
+        : "No certifications listed.",
+      showKnowMore: Array.isArray(profile.certifications) && profile.certifications.length > 0,
+      content: (
+        <Stack spacing={1}>
+          {profile.certifications?.map((cert: any, i: number) => (
+            <Box key={i}>
+              <Typography fontWeight={600} variant="body2">{cert.name}</Typography>
+              <Typography variant="caption" color="text.secondary">
+                {cert.issuer} • {cert.issue_date}
+              </Typography>
+              {cert.credential_url && (
+                <Button href={cert.credential_url} target="_blank" size="small" sx={{ ml: 1 }} variant="text">
+                  View Credential
+                </Button>
+              )}
+            </Box>
+          ))}
+        </Stack>
+      ),
+    },
+    {
+      title: "Languages",
+      image: "/images/languages.webp",
+      description: Array.isArray(profile.languages) && profile.languages.length > 0
+        ? profile.languages.join(", ")
+        : "No languages listed.",
+      showKnowMore: Array.isArray(profile.languages) && profile.languages.length > 0,
+      content: <Typography variant="body2">{profile.languages?.join(", ")}</Typography>,
+    },
+  ];
+
+  const handleKnowMore = (title: string) => {
+    const card = cardData.find(c => c.title === title);
+    if (card) setDialogContent({ title: card.title, content: card.content });
+    setDialogOpen(true);
+  };
+
+  return (
+    <>
+    <Box bgcolor="#fff" minHeight="100vh">
       <Head>
-        <title>{name} | {profile?.position || "Project Engineer"}</title>
+        <title>{name} | {profile.position || "Project Engineer"}</title>
         <meta name="description" content="Personal portfolio of Ashish Negi - Full-stack developer." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="min-h-[88vh] bg-slate-50 flex flex-col">
-        <div className="flex-1 flex flex-col items-center justify-center py-8 px-2 sm:px-4">
-          <div className="w-full max-w-[900px] grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 items-center">
-            <div
-              className="w-full min-w-[220px] max-w-[400px] aspect-[16/9] rounded-xl mx-auto"
-              style={{
-                backgroundImage: `url("${
-                  // profile?.profileImage || 
-                  "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"}")`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            />
-            <div className="min-w-[180px] max-w-[400px] w-full flex flex-col items-start gap-4">
-              <Typography
-                variant="h2"
-                fontWeight={900}
-                color="#0d141c"
-                sx={{
-                  fontSize: { xs: "2rem", sm: "2.2rem", md: "2.7rem" },
-                  letterSpacing: "-0.033em",
-                  lineHeight: 1.1,
-                }}
-              >
-                {letters.map((char: string, i: number) => (
-                  <span
-                    key={i}
-                    onMouseEnter={() => handleHover(i)}
-                    style={{
-                      display: "inline-block",
-                      transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
-                      transform: activeIndex === i ? "translateY(-16px)" : "translateY(0)",
-                    } as React.CSSProperties}
-                  >
-                    {char === " " ? "\u00A0" : char}
-                  </span>
-                ))}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="#0d141c"
-                sx={{
-                  fontWeight: 400,
-                  fontSize: { xs: "1rem", sm: "1.08rem", md: "1.15rem" },
-                }}
-              >
-                {profile?.position || "Project Engineer"}
-              </Typography>
-              <Link href="/projects" passHref>
-                <AppButton variant="outlined" fullWidth>
-                  View Projects
-                </AppButton>
-              </Link>
-            </div>
-          </div>
-          <div className="w-full max-w-[700px] mx-auto mt-8 px-2">
-            <Typography
-              color="#0d141c"
-              fontSize={{ xs: "1rem", sm: "1.08rem", md: "1.15rem" }}
-              fontWeight={400}
-              sx={{ textAlign: "center", px: 2, pb: 2, pt: 1 }}
-            >
-              {profile?.summary ||
-                "I'm a passionate full-stack developer with a focus on creating intuitive and engaging digital experiences. My work blends user-centered design principles with a keen eye for aesthetics, resulting in solutions that are both functional and visually appealing. I'm always eager to collaborate on new projects and bring innovative ideas to life."}
+      <Box minHeight="88vh" display="flex" flexDirection="column" alignItems="center" justifyContent="center" py={8}>
+        <Stack direction={{ xs: "column", md: "row" }} spacing={4} alignItems="center" width="100%" maxWidth={900}>
+          <Paper
+            sx={{
+              width: { xs: 220, md: 400 },
+              aspectRatio: "16/9",
+              borderRadius: 3,
+              backgroundImage: `url("https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80")`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              minWidth: 220,
+              maxWidth: 400,
+              mx: "auto",
+            }}
+          />
+          <Stack spacing={2} minWidth={180} maxWidth={400} width="100%">
+            <Typography variant="h2" fontWeight={900} color="#0d141c" sx={{ fontSize: { xs: "2rem", md: "2.7rem" }, letterSpacing: "-0.033em", lineHeight: 1.1 }}>
+              {name.split("").map((char, i) => (
+                <Box
+                  key={i}
+                  component="span"
+                  onMouseEnter={() => activeIndex === null && (setActiveIndex(i), setTimeout(() => setActiveIndex(null), 500))}
+                  sx={{
+                    display: "inline-block",
+                    transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
+                    transform: activeIndex === i ? "translateY(-16px)" : "translateY(0)",
+                  }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </Box>
+              ))}
             </Typography>
-            <div className="flex justify-center gap-6 mt-4">
-              {profile?.email && (
-                <a
-                  href={`mailto:${profile.email}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Email"
-                >
-                  <EmailIcon fontSize="medium" style={{ color: "#000" }} />
-                </a>
-              )}
-              {profile?.linkedin && (
-                <a
-                  href={profile.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="LinkedIn"
-                >
-                  <LinkedInIcon fontSize="medium" style={{ color: "#000" }} />
-                </a>
-              )}
-              {profile?.github && (
-                <a
-                  href={profile.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="GitHub"
-                >
-                  <GitHubIcon fontSize="medium" style={{ color: "#000" }} />
-                </a>
-              )}
-              {profile?.location && (
-                <span
-                  title={profile.location}
-                  className="flex items-center"
-                  style={{ color: "#1976d2" }}
-                >
-                  <LocationOnIcon fontSize="medium" style={{ color: "#000" }} />
-                </span>
-              )}
-            </div>
+            <Typography variant="subtitle1" color="#0d141c" fontWeight={400}>
+              {profile.position || "Project Engineer"}
+            </Typography>
+            <Link href="/projects" passHref>
+              <Button variant="outlined" fullWidth>View Projects</Button>
+            </Link>
+          </Stack>
+        </Stack>
+
+        <Typography color="#0d141c" fontWeight={400} textAlign="left" py={2} maxWidth={700} mt={4}>
+          {profile.summary ||
+            "I'm a passionate full-stack developer with a focus on creating intuitive and engaging digital experiences. My work blends user-centered design principles with a keen eye for aesthetics, resulting in solutions that are both functional and visually appealing. I'm always eager to collaborate on new projects and bring innovative ideas to life."}
+        </Typography>
+
+        <Box p={2} mt={6} maxWidth={900} width="100%">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {cardData.map(card => (
+              <div key={card.title}>
+                <ProjectCard
+                  title={card.title}
+                  image={card.image}
+                  description={card.description}
+                  showKnowMore={card.showKnowMore}
+                  onKnowMoreClick={() => handleKnowMore(card.title)}
+                />
+              </div>
+            ))}
           </div>
-        </div>
-      </div>
-    </div>
+        </Box>
+
+        {dialogContent && (
+          <ReusableDialog
+            open={dialogOpen}
+            title={dialogContent.title}
+            content={dialogContent.content}
+            onClose={() => setDialogOpen(false)}
+          />
+        )}
+
+        <Stack direction="row" spacing={2} justifyContent="center" mt={4}>
+          {profile.email && (
+            <IconButton href={`mailto:${profile.email}`} target="_blank" title="Email">
+              <EmailIcon />
+            </IconButton>
+          )}
+          {profile.linkedin && (
+            <IconButton href={profile.linkedin} target="_blank" title="LinkedIn">
+              <LinkedInIcon />
+            </IconButton>
+          )}
+          {profile.github && (
+            <IconButton href={profile.github} target="_blank" title="GitHub">
+              <GitHubIcon />
+            </IconButton>
+          )}
+          {profile.location && (
+            <IconButton disabled title={profile.location}>
+              <LocationOnIcon />
+            </IconButton>
+          )}
+        </Stack>
+      </Box>
+    </Box>
+   
+    </>
   );
 }

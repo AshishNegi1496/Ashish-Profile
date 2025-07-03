@@ -3,6 +3,7 @@ package com.profile.profile.dto;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 
 public class ProjectDTO {
@@ -10,25 +11,34 @@ public class ProjectDTO {
     private Long id;
     private String title;
     private String description;
-    private String keySkills;
     private LocalDate startDate;
     private LocalDate endDate;
     private String highlights;
     private String imageUrl;
 
+    // New: list of skill names (or IDs if needed)
+    private Set<String> skills;  ;
 
     public ProjectDTO() {
     }
 
-    public ProjectDTO(Long id, String title, String description, String keySkills, LocalDate startDate, LocalDate endDate, String highlights, String imageUrl) {
+    public ProjectDTO(Long id, String title, String description, LocalDate startDate, LocalDate endDate, String highlights, String imageUrl, Set<String> skills) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.keySkills = keySkills;
         this.startDate = startDate;
         this.endDate = endDate;
         this.highlights = highlights;
         this.imageUrl = imageUrl;
+        this.skills = skills;
+    }
+
+    public Set<String> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(Set<String> skills) {
+        this.skills = skills;
     }
 
     public String getImageUrl() {
@@ -63,13 +73,6 @@ public class ProjectDTO {
         this.description = description;
     }
 
-    public String getKeySkills() {
-        return keySkills;
-    }
-
-    public void setKeySkills(String keySkills) {
-        this.keySkills = keySkills;
-    }
 
     public LocalDate getStartDate() {
         return startDate;

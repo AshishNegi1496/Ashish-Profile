@@ -1,6 +1,3 @@
-# app/schemas.py
-from bson import ObjectId
-
 def profile_helper(profile) -> dict:
     return {
         "id": str(profile["_id"]),
@@ -12,5 +9,11 @@ def profile_helper(profile) -> dict:
         "phone": profile.get("phone"),
         "linkedin": profile.get("linkedin"),
         "github": profile.get("github"),
-         "profileImage": profile.get("profileImage"),
+        "profileImage": profile.get("profileImage"),
+        "resumeUrl": profile.get("resumeUrl"),
+        "education": profile.get("education", []),
+        "experience": profile.get("experience", []),
+        "skills": profile.get("skills", []),
+        "certifications": profile.get("certifications", []),
+        "languages": profile.get("languages", []),
     }
