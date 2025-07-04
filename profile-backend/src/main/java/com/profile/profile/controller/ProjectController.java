@@ -25,7 +25,7 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO dto) {
         return ResponseEntity.ok(projectService.createProject(dto));
     }

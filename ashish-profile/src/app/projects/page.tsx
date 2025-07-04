@@ -44,7 +44,8 @@ export default function ProjectsPage() {
   if (error) return <p className="text-center text-red-500">Failed to load projects.</p>;
 
 return (
-    <section className="bg-white min-h-screen max-w-7xl mx-auto px-2 sm:px-4 md:px-8 py-8 sm:py-12">
+ 
+    <section className="bg-white min-h-screen max-w-full mx-auto px-2 sm:px-4 md:px-8 py-8 sm:py-12">
   
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif mb-2 sm:mb-4 text-left text-black">
         Projects
@@ -88,9 +89,14 @@ return (
           }
         />
       )}
-       {token ? (
-    <ProjectForm />
-       ) : null}
-    </section>
+      
+ 
+
+     {token && (
+      <div className="max-w-2xl mx-auto my-8">
+        <ProjectForm />
+      </div>
+    )}
+      </section>
   );
 }

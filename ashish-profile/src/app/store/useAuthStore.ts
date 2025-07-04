@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-
+import { persist } from 'zustand/middleware';
 type AuthStore = {
   token: string | null;
   username: string | null;
@@ -10,15 +10,22 @@ type AuthStore = {
   logout: () => void;
 };
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  token: null,
-  username: null,
-  role: null,
-  setToken: (token) => set({ token }),
-  setUsername: (username) => set({ username }),
-  setRole: (role) => set({ role }),
-  logout: () => set({ token: null, username: null, role: null }),
-}));
+export const useAuthStore = create<AuthStore>()(
+  persist(
+    (set) => ({
+      token: null,
+      username: null,
+      role: null,
+      setToken: (token) => set({ token }),
+      setUsername: (username) => set({ username }),
+      setRole: (role) => set({ role }),
+      logout: () => set({ token: null, username: null, role: null }),
+    }),
+    {
+      name: 'auth-storage', // key  localStorage
+    }
+  )
+);
 
 
 export function useUser() {

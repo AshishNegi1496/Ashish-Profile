@@ -1,20 +1,36 @@
+
+
+
 "use client";
 import { useState } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import { Box, Typography, Button, Chip, Stack, IconButton, Paper } from "@mui/material";
-import Grid from "@mui/material/Grid";
-import EmailIcon from "@mui/icons-material/Email";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import {
+  Typography,
+  Button,
+  Container,
+  Box,
+  Grid,
+  Paper,
+  Avatar,
+  Link as MuiLink,
+  useTheme,
+  Chip,
+  Stack,
+} from "@mui/material";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 import { useProfiles } from "./lib/fetcher";
 import Loader from "./components/Loader";
-import ProjectCard from "./components/ProjectCard";
 import ReusableDialog from "./components/ReusableDialog";
 
+const profileImg =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuBtUlfdm1JH2SjTck8lbNVEuEGEMLJgbe8RNkfrKpuG25vi8GCC1UxQgfBgc2YBxmcuzgMeStW7KYEe7CUI2nQi5J9937h_bb87eML-4wtgA4SpV_zqdTM6MebiPb_e2Me5EPgjyqV1lJVqg0R2uBJ4jO1tqBskw90lW1csityH4W5F8uA_y8F0g95QM0yIDyRT_EXDMsEU1RD8VhfBplwQKEzAFbaggcyRe2wqNSbh1iXXQvDWrQzWkJ1kQ7ELqDjLIO4aGBMzwas";
+
 export default function HomePage() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState<{ title: string; content: React.ReactNode } | null>(null);
   const { profiles, loading } = useProfiles();
@@ -26,8 +42,7 @@ export default function HomePage() {
   const cardData = [
     {
       title: "Skills",
-      image: "/images/skills.webp",
-      description: Array.isArray(profile.skills) && profile.skills.length > 0
+      desc: Array.isArray(profile.skills) && profile.skills.length > 0
         ? profile.skills.slice(0, 5).join(", ") + (profile.skills.length > 5 ? "..." : "")
         : "No skills listed.",
       showKnowMore: Array.isArray(profile.skills) && profile.skills.length > 0,
@@ -41,8 +56,7 @@ export default function HomePage() {
     },
     {
       title: "Experience",
-      image: "/images/experience.webp",
-      description: Array.isArray(profile.experience) && profile.experience.length > 0
+      desc: Array.isArray(profile.experience) && profile.experience.length > 0
         ? profile.experience[0].title + " at " + profile.experience[0].company
         : "No experience listed.",
       showKnowMore: Array.isArray(profile.experience) && profile.experience.length > 0,
@@ -62,8 +76,7 @@ export default function HomePage() {
     },
     {
       title: "Certifications",
-      image: "/images/certifications.webp",
-      description: Array.isArray(profile.certifications) && profile.certifications.length > 0
+      desc: Array.isArray(profile.certifications) && profile.certifications.length > 0
         ? profile.certifications[0].name
         : "No certifications listed.",
       showKnowMore: Array.isArray(profile.certifications) && profile.certifications.length > 0,
@@ -87,13 +100,49 @@ export default function HomePage() {
     },
     {
       title: "Languages",
-      image: "/images/languages.webp",
-      description: Array.isArray(profile.languages) && profile.languages.length > 0
+      desc: Array.isArray(profile.languages) && profile.languages.length > 0
         ? profile.languages.join(", ")
         : "No languages listed.",
       showKnowMore: Array.isArray(profile.languages) && profile.languages.length > 0,
       content: <Typography variant="body2">{profile.languages?.join(", ")}</Typography>,
     },
+   {
+  title: "Passions",
+  desc: "Esports, Cricket, Lawn Tennis, Photography, Cooking, Travelling, Learning new technology, and many more. You can find some of my moments and clicks in the Gallery section.",
+  showKnowMore: true,
+  content: (
+    <>
+      <List
+        sx={{
+          listStyleType: 'disc',
+          pl: 2,
+          mb: 1,
+          '& .MuiListItem-root': {
+            display: 'list-item',
+            color: 'black',
+            fontSize: '1rem',
+            py: 0,
+          },
+        }}
+      >
+        <ListItem>Esports</ListItem>
+        <ListItem>Cricket</ListItem>
+        <ListItem>Lawn Tennis</ListItem>
+        <ListItem>Photography</ListItem>
+        <ListItem>Cooking</ListItem>
+        <ListItem>Travelling</ListItem>
+        <ListItem>Learning New Technology</ListItem>
+      </List>
+      <Typography variant="body2">
+        ...and many more! Check out the{' '}
+        <Link href="/gallery" color="primary" >
+          Gallery
+        </Link>{' '}
+        for pictures.
+      </Typography>
+    </>
+  ),
+}
   ];
 
   const handleKnowMore = (title: string) => {
@@ -103,76 +152,145 @@ export default function HomePage() {
   };
 
   return (
-    <>
-    <Box bgcolor="#fff" minHeight="100vh">
-      <Head>
-        <title>{name} | {profile.position || "Project Engineer"}</title>
-        <meta name="description" content="Personal portfolio of Ashish Negi - Full-stack developer." />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Box minHeight="88vh" display="flex" flexDirection="column" alignItems="center" justifyContent="center" py={8}>
-        <Stack direction={{ xs: "column", md: "row" }} spacing={4} alignItems="center" width="100%" maxWidth={900}>
-          <Paper
-            sx={{
-              width: { xs: 220, md: 400 },
-              aspectRatio: "16/9",
-              borderRadius: 3,
-              backgroundImage: `url("https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80")`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              minWidth: 220,
-              maxWidth: 400,
-              mx: "auto",
-            }}
-          />
-          <Stack spacing={2} minWidth={180} maxWidth={400} width="100%">
-            <Typography variant="h2" fontWeight={900} color="#0d141c" sx={{ fontSize: { xs: "2rem", md: "2.7rem" }, letterSpacing: "-0.033em", lineHeight: 1.1 }}>
-              {name.split("").map((char, i) => (
-                <Box
-                  key={i}
-                  component="span"
-                  onMouseEnter={() => activeIndex === null && (setActiveIndex(i), setTimeout(() => setActiveIndex(null), 500))}
+    <div className="w-full">
+      <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", fontFamily: "Poppins, sans-serif" }}>
+        <Head>
+          <title>{name} | {profile.position || "Project Engineer"}</title>
+          <meta name="description" content="Personal portfolio of Ashish Negi - Full-stack developer." />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+
+
+
+        {/* Main */}
+        <Container sx={{ py: 8 }}>
+          <Grid container spacing={6} alignItems="center">
+            <Grid
+              sx={{
+                flexBasis: {
+                  xs: "100%",
+                  md: "50%",
+                },
+                maxWidth: {
+                  xs: "100%",
+                  md: "50%",
+                },
+              }}
+            >
+              <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+                {profile.position || "Project Engineer"}
+              </Typography>
+              <Typography variant="h2" fontWeight={700} color="text.primary" gutterBottom sx={{ lineHeight: 1.1 }}>
+                I'm {name}
+              </Typography>
+              <Typography color="text.secondary" sx={{ maxWidth: 480, mb: 3 }}>
+                {profile.summary ||
+                  "Full Stack Developer with expertise in React.js, Spring Boot, FastAPI, and microservices. Experienced with cloud-native solutions, CI/CD, Docker, and data visualization."}
+              </Typography>
+              <Link href="/projects" passHref >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
                   sx={{
-                    display: "inline-block",
-                    transition: "transform 0.3s cubic-bezier(0.4,0,0.2,1)",
-                    transform: activeIndex === i ? "translateY(-16px)" : "translateY(0)",
+                    backgroundColor: "#222",
+                    "&:hover": { backgroundColor: "#444", transform: "scale(1.05)" },
+                    borderRadius: 2,
+                    px: 5,
+                    py: 2,
+                    textTransform: "none",
+                    fontWeight: 500,
                   }}
                 >
-                  {char === " " ? "\u00A0" : char}
-                </Box>
-              ))}
-            </Typography>
-            <Typography variant="subtitle1" color="#0d141c" fontWeight={400}>
-              {profile.position || "Project Engineer"}
-            </Typography>
-            <Link href="/projects" passHref>
-              <Button variant="outlined" fullWidth>View Projects</Button>
-            </Link>
-          </Stack>
-        </Stack>
+                  View Projects
+                </Button>
+              </Link>
+            </Grid>
+            <Grid xs={12} md={6} sx={{ display: "flex", justifyContent: "center" }}>
+              <Avatar
+                src={profile?.image || profileImg}
+                alt={name}
+                sx={{
+                  width: 320,
+                  height: 320,
+                  boxShadow: 4,
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                }}
+              />
+            </Grid>
+          </Grid>
 
-        <Typography color="#0d141c" fontWeight={400} textAlign="left" py={2} maxWidth={700} mt={4}>
-          {profile.summary ||
-            "I'm a passionate full-stack developer with a focus on creating intuitive and engaging digital experiences. My work blends user-centered design principles with a keen eye for aesthetics, resulting in solutions that are both functional and visually appealing. I'm always eager to collaborate on new projects and bring innovative ideas to life."}
-        </Typography>
-
-        <Box p={2} mt={6} maxWidth={900} width="100%">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {cardData.map(card => (
-              <div key={card.title}>
-                <ProjectCard
-                  title={card.title}
-                  image={card.image}
-                  description={card.description}
-                  showKnowMore={card.showKnowMore}
-                  onKnowMoreClick={() => handleKnowMore(card.title)}
-                />
-              </div>
+          {/* Cards Section */}
+          <Grid container spacing={4} sx={{ mt: 8 }}>
+            {cardData?.map((item) => (
+              <Grid
+                key={item.title}
+                sx={{
+                  display: "flex",
+                  flexBasis: {
+                    xs: "100%",
+                    md: "50%",
+                    lg: "25%",
+                  },
+                  maxWidth: {
+                    xs: "100%",
+                    md: "50%",
+                    lg: "25%",
+                  },
+                }}
+              >
+                <Paper
+                  elevation={4}
+                  sx={{
+                    p: 4,
+                    borderRadius: 4,
+                    transition: "box-shadow 0.3s, transform 0.3s",
+                    "&:hover": {
+                      boxShadow: 8,
+                      transform: "translateY(-4px)",
+                    },
+                    width: "100%",
+                    minHeight: 240,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    flex: 1,
+                  }}
+                >
+                  <Typography variant="h5" fontWeight={700} color="text.primary" gutterBottom>
+                    {item.title}
+                  </Typography>
+                  <Typography color="text.secondary" sx={{ mb: 3 }}>
+                    {item.desc}
+                  </Typography>
+                  {item.showKnowMore && (
+                    <MuiLink
+                      href="#"
+                      color="text.primary"
+                      underline="none"
+                      sx={{
+                        fontWeight: 500,
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 0.5,
+                        "&:hover": { color: "grey.700" },
+                      }}
+                      onClick={e => {
+                        e.preventDefault();
+                        handleKnowMore(item?.title);
+                      }}
+                    >
+                      Know More <ArrowForwardIcon fontSize="small" />
+                    </MuiLink>
+                  )}
+                </Paper>
+              </Grid>
             ))}
-          </div>
-        </Box>
+          </Grid>
+        </Container>
 
+        {/* Dialog for Know More */}
         {dialogContent && (
           <ReusableDialog
             open={dialogOpen}
@@ -182,31 +300,7 @@ export default function HomePage() {
           />
         )}
 
-        <Stack direction="row" spacing={2} justifyContent="center" mt={4}>
-          {profile.email && (
-            <IconButton href={`mailto:${profile.email}`} target="_blank" title="Email">
-              <EmailIcon />
-            </IconButton>
-          )}
-          {profile.linkedin && (
-            <IconButton href={profile.linkedin} target="_blank" title="LinkedIn">
-              <LinkedInIcon />
-            </IconButton>
-          )}
-          {profile.github && (
-            <IconButton href={profile.github} target="_blank" title="GitHub">
-              <GitHubIcon />
-            </IconButton>
-          )}
-          {profile.location && (
-            <IconButton disabled title={profile.location}>
-              <LocationOnIcon />
-            </IconButton>
-          )}
-        </Stack>
       </Box>
-    </Box>
-   
-    </>
+    </div>
   );
 }

@@ -5,12 +5,23 @@ export const fetcher = async (url: string) => {
     console.log('Fetcher called for:', url);
   const token = useAuthStore.getState().token;
 
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   const res = await fetch(`${API_BASE_URL_PROJECTS}${url}`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers,
   });
+
+  // const res = await fetch(`${API_BASE_URL_PROJECTS}${url}`, {
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // });
 
   if (!res.ok) {
     throw new Error("Unauthorized or failed to fetch");

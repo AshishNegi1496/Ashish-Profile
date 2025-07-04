@@ -49,7 +49,18 @@ export default function ReusableDialog({
       </DialogContent>
       <DialogActions>
         {actions || (
-          <Button onClick={onClose} color="primary">
+          <Button onClick={onClose} 
+            variant="outlined"
+         sx={{
+    color: '#fff',               
+    backgroundColor: '#000',     
+        borderColor: '#000',         
+    '&:hover': {
+      backgroundColor: '#222',   
+      borderColor: '#000',
+      color: '#fff',
+    },
+  }}>
             Close
           </Button>
         )}

@@ -7,9 +7,9 @@ import {
   Typography,
   CardHeader,
   Box,
-  Button
+  Link
 } from '@mui/material';
-
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 export type ProjectCardProps = {
   title: string;
   image: string;
@@ -27,18 +27,18 @@ export default function ProjectCard({
 }: ProjectCardProps) {
   return (
     <Card elevation={3} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-<CardMedia
-  component="img"
-  image={image}
-  alt={title}
-  sx={{ height: 200, objectFit: 'cover' }}
-  onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    const target = e.target as HTMLImageElement;
-    if (target.src !== window.location.origin + '/images/fallback.jpg') {
-      target.src = '/images/fallback.jpg';
-    }
-  }}
-/>
+      <CardMedia
+        component="img"
+        image={image}
+        alt={title}
+        sx={{ height: 200, objectFit: 'cover' }}
+        onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+          const target = e.target as HTMLImageElement;
+          if (target.src !== window.location.origin + '/images/fallback.jpg') {
+            target.src = '/images/fallback.jpg';
+          }
+        }}
+      />
       <CardHeader
         title={
           <Typography variant="h6" sx={{ fontFamily: 'serif', fontWeight: 600 }}>
@@ -52,10 +52,30 @@ export default function ProjectCard({
         </Typography>
 
         {showKnowMore && (
-          <Box className="text-right mt-4">
-            <Button variant="outlined" size="small" onClick={onKnowMoreClick}>
+          <Box sx={{
+            mt: 2,
+            alignSelf: 'flex-start',
+          }}>
+            <Link
+              component="button"
+              onClick={onKnowMoreClick}
+              color="text.primary"
+              underline="none"
+              sx={{
+                fontWeight: 500,
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                "&:hover": { color: "grey.700" },
+                px: 0,
+                py: 0,
+                sticky: "bottom",
+                bottom: 0,
+              }}
+            >
               Know More
-            </Button>
+              <ArrowForwardIcon fontSize="small" />
+            </Link>
           </Box>
         )}
       </CardContent>

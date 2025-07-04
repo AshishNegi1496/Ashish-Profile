@@ -25,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
 
         {/* Footer with 5% height */}
-        <div style={{ height: '5vh', flexShrink: 0 }}>
+        <div style={{ height: '20vh', flexShrink: 0 }}>
           <Footer />
         </div>
       </body>

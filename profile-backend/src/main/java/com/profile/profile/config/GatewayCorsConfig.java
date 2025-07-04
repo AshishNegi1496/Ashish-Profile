@@ -13,7 +13,8 @@ public class GatewayCorsConfig {
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000"); // React frontend
+        config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("http://10.208.10.157:3001");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 

@@ -6,7 +6,8 @@ import Box from "@mui/material/Box";
 import { useProfiles } from "../lib/fetcher";
 import { useState } from "react";
 import { useAuthStore } from "@/app/store/useAuthStore";
-
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 const navLinks = [
   { label: 'Home', href: '/' },
   { label: 'Projects', href: '/projects' },
@@ -39,17 +40,17 @@ export default function Navbar() {
               </svg>
             </Box>
             <Typography variant="h6" fontWeight={700} color="#000" sx={{ letterSpacing: "-0.015em" }}>
-              Never Settle
+             DevNix
             </Typography>
           </span>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex gap-6 items-center">
-            {navLinks.map(({ label, href }) => (
+            {navLinks?.map(({ label, href }) => (
               <Link
                 key={label}
                 href={href}
-                className="font-serif text-lg text-gray-900 px-4 py-2 rounded-lg transition-all duration-200 hover:bg-blue-100 hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-900"
+                className="font-serif text-base px-4 py-2 rounded-lg transition-all duration-200 hover:bg-neutral-200 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200"
               >
                 {label}
               </Link>
@@ -58,16 +59,13 @@ export default function Navbar() {
             {/* Conditional Auth Section */}
         {token ? (
               <>
-                <Avatar
-                  alt={profile?.name || username || "User"}
-                  src={profile?.profileImage || ""}
-                  sx={{ width: 40, height: 40, ml: 4 }}
-                />
+          
                 <button
                   onClick={handleLogout}
-                  className="ml-4 px-4 py-2 bg-red-100 text-red-700 rounded hover:bg-red-200 transition"
+                  className="ml-4 px-4 py-2 bg-red-100 text-red-700  transition"
                 >
-                  Logout
+                   <LogoutIcon fontSize="small" />
+                  
                 </button>
               </>
             ) : (
@@ -75,7 +73,7 @@ export default function Navbar() {
                 href="/login"
                 className="ml-4 px-4 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition"
               >
-                Login
+          <LoginIcon fontSize="small" />
               </Link>
             )}
           </div>
@@ -103,7 +101,7 @@ export default function Navbar() {
               <Link
                 key={label}
                 href={href}
-                className="font-serif text-base px-4 py-2 rounded-lg transition-all duration-200 hover:bg-neutral-200 hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                className="font-serif text-base px-4 py-2 rounded-lg transition-all duration-200 hover:bg-neutral-200 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-200"
                 onClick={() => setOpen(false)}
               >
                 {label}

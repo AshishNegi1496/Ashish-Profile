@@ -36,8 +36,8 @@ public class SecurityConfig {
                    .authorizeExchange(exchange -> exchange
                            .pathMatchers(HttpMethod.OPTIONS).permitAll() // CORS preflight
                            .pathMatchers("/auth/login", "/auth/register", "/auth/test").permitAll()
-                           .pathMatchers("/resources/**", "/signup", "/about").permitAll()
-                           .pathMatchers("/api/projects/**").hasRole("ADMIN") // Adjust based on your needs
+                           .pathMatchers("/resources/**", "/signup", "/about", "/uploads/**", "/api/projects/**").permitAll()
+                           .pathMatchers("/api/projects/create").hasRole("ADMIN")
                            .pathMatchers("/db/**").access((authentication, context) ->
                                    hasRole("ADMIN").check(authentication, context)
                                            .filter(decision -> !decision.isGranted())
