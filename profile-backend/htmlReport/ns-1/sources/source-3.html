@@ -1,0 +1,252 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > ProjectServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.profile.profile.service</a>
+</div>
+
+<h1>Coverage Summary for Class: ProjectServiceImpl (com.profile.profile.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProjectServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    44.4%
+  </span>
+  <span class="absValue">
+    (4/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (4/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    63.6%
+  </span>
+  <span class="absValue">
+    (35/55)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.profile.profile.service;
+&nbsp;
+&nbsp;
+&nbsp;import com.profile.profile.dto.ProjectDTO;
+&nbsp;import com.profile.profile.entity.Project;
+&nbsp;import com.profile.profile.entity.Skill;
+&nbsp;import com.profile.profile.repository.ProjectRepository;
+&nbsp;import com.profile.profile.repository.SkillRepository;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.beans.BeanUtils;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.HashSet;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Set;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Service
+&nbsp;
+&nbsp;public class ProjectServiceImpl implements ProjectService {
+&nbsp;
+&nbsp;    private final ProjectRepository projectRepository;
+&nbsp;    private final SkillRepository skillRepository;
+&nbsp;    @Autowired
+<b class="fc">&nbsp;    public ProjectServiceImpl(ProjectRepository projectRepository, SkillRepository skillRepository) {</b>
+<b class="fc">&nbsp;        this.projectRepository = projectRepository;</b>
+<b class="fc">&nbsp;        this.skillRepository = skillRepository;</b>
+&nbsp;    }
+&nbsp;    @Override
+&nbsp;
+&nbsp;    public ProjectDTO createProject(ProjectDTO dto) {
+<b class="fc">&nbsp;        Project project = new Project();</b>
+<b class="fc">&nbsp;        project.setTitle(dto.getTitle());</b>
+<b class="fc">&nbsp;        project.setDescription(dto.getDescription());</b>
+<b class="fc">&nbsp;        project.setStartDate(dto.getStartDate());</b>
+<b class="fc">&nbsp;        project.setEndDate(dto.getEndDate());</b>
+<b class="fc">&nbsp;        project.setHighlights(dto.getHighlights());</b>
+<b class="fc">&nbsp;        project.setImageUrl(dto.getImageUrl());</b>
+&nbsp;
+&nbsp;        // Map skills
+<b class="fc">&nbsp;        Set&lt;Skill&gt; skills = getOrCreateSkills(dto.getSkills());</b>
+<b class="fc">&nbsp;        project.setSkills(skills);</b>
+&nbsp;
+<b class="fc">&nbsp;        Project saved = projectRepository.save(project);</b>
+<b class="fc">&nbsp;        return mapToDTO(saved);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public ProjectDTO updateProject(Long id, ProjectDTO dto) {
+<b class="nc">&nbsp;        Project project = projectRepository.findById(id)</b>
+<b class="nc">&nbsp;                .orElseThrow(() -&gt; new RuntimeException(&quot;Project not found&quot;));</b>
+&nbsp;
+<b class="nc">&nbsp;        project.setTitle(dto.getTitle());</b>
+<b class="nc">&nbsp;        project.setDescription(dto.getDescription());</b>
+<b class="nc">&nbsp;        project.setStartDate(dto.getStartDate());</b>
+<b class="nc">&nbsp;        project.setEndDate(dto.getEndDate());</b>
+<b class="nc">&nbsp;        project.setHighlights(dto.getHighlights());</b>
+<b class="nc">&nbsp;        project.setImageUrl(dto.getImageUrl());</b>
+&nbsp;
+&nbsp;        // Update skills
+<b class="nc">&nbsp;        Set&lt;Skill&gt; updatedSkills = getOrCreateSkills(dto.getSkills());</b>
+<b class="nc">&nbsp;        project.setSkills(updatedSkills);</b>
+&nbsp;
+<b class="nc">&nbsp;        return mapToDTO(projectRepository.save(project));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Project getProjectEntityById(Long id) {
+<b class="nc">&nbsp;        return projectRepository.findById(id)</b>
+<b class="nc">&nbsp;                .orElseThrow(() -&gt; new RuntimeException(&quot;Project not found&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public Project saveProjectEntity(Project project) {
+<b class="nc">&nbsp;        return projectRepository.save(project);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;    @Override
+&nbsp;    @Transactional(readOnly = true)
+&nbsp;    public List&lt;ProjectDTO&gt; getAllProjects() {
+<b class="nc">&nbsp;        return projectRepository.findAll().stream()</b>
+<b class="nc">&nbsp;                .map(this::mapToDTO)</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void deleteProject(Long id) {
+<b class="nc">&nbsp;        if (!projectRepository.existsById(id)) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Project not found&quot;);</b>
+&nbsp;        }
+<b class="nc">&nbsp;        projectRepository.deleteById(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private ProjectDTO mapToDTO(Project project) {
+<b class="fc">&nbsp;        ProjectDTO dto = new ProjectDTO();</b>
+<b class="fc">&nbsp;        dto.setId(project.getId());</b>
+<b class="fc">&nbsp;        dto.setTitle(project.getTitle());</b>
+<b class="fc">&nbsp;        dto.setDescription(project.getDescription());</b>
+<b class="fc">&nbsp;        dto.setStartDate(project.getStartDate());</b>
+<b class="fc">&nbsp;        dto.setEndDate(project.getEndDate());</b>
+<b class="fc">&nbsp;        dto.setHighlights(project.getHighlights());</b>
+<b class="fc">&nbsp;        dto.setImageUrl(project.getImageUrl());</b>
+&nbsp;
+&nbsp;        // Convert skills to set of names
+<b class="fc">&nbsp;        Set&lt;String&gt; skillNames = project.getSkills()</b>
+<b class="fc">&nbsp;                .stream()</b>
+<b class="fc">&nbsp;                .map(Skill::getName)</b>
+<b class="fc">&nbsp;                .collect(Collectors.toSet());</b>
+<b class="fc">&nbsp;        dto.setSkills(skillNames);</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        return dto;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Set&lt;Skill&gt; getOrCreateSkills(Set&lt;String&gt; skillNames) {
+<b class="pc">&nbsp;        if (skillNames == null || skillNames.isEmpty()) return Collections.emptySet();</b>
+&nbsp;
+<b class="fc">&nbsp;        Set&lt;Skill&gt; skills = new HashSet&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;        for (String name : skillNames) {</b>
+<b class="fc">&nbsp;            Skill skill = skillRepository.findByNameIgnoreCase(name)</b>
+<b class="fc">&nbsp;                    .orElseGet(() -&gt; skillRepository.save(new Skill(name.trim())));</b>
+<b class="fc">&nbsp;            skills.add(skill);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        return skills;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-07-04 15:15</div>
+</div>
+</body>
+</html>

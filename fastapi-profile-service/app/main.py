@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import router
+from app.profile_routes import router as profile_router
+from app.chat_routes import router as chat_router
 app = FastAPI()
 
 # CORS 
@@ -17,7 +18,8 @@ app.add_middleware(
 )
 
 # Include all routes
-app.include_router(router)
+app.include_router(profile_router)
+app.include_router(chat_router) 
 
 if __name__ == "__main__":
     import uvicorn

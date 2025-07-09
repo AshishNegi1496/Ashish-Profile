@@ -17,6 +17,7 @@ import {
   useTheme,
   Chip,
   Stack,
+    Fab,
 } from "@mui/material";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -25,6 +26,8 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { useProfiles } from "./lib/fetcher";
 import Loader from "./components/Loader";
 import ReusableDialog from "./components/ReusableDialog";
+import Chatbot from "./components/Chatbot";
+import ChatIcon from '@mui/icons-material/Chat';
 
 const profileImg =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBtUlfdm1JH2SjTck8lbNVEuEGEMLJgbe8RNkfrKpuG25vi8GCC1UxQgfBgc2YBxmcuzgMeStW7KYEe7CUI2nQi5J9937h_bb87eML-4wtgA4SpV_zqdTM6MebiPb_e2Me5EPgjyqV1lJVqg0R2uBJ4jO1tqBskw90lW1csityH4W5F8uA_y8F0g95QM0yIDyRT_EXDMsEU1RD8VhfBplwQKEzAFbaggcyRe2wqNSbh1iXXQvDWrQzWkJ1kQ7ELqDjLIO4aGBMzwas";
@@ -33,6 +36,7 @@ export default function HomePage() {
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState<{ title: string; content: React.ReactNode } | null>(null);
+   const [chatbotOpen, setChatbotOpen] = useState(false);
   const { profiles, loading } = useProfiles();
   const profile = profiles?.[0] || {};
   const name = profile.name || "Ashish Negi";
@@ -289,7 +293,34 @@ export default function HomePage() {
             ))}
           </Grid>
         </Container>
+<Chatbot
+          isOpen={chatbotOpen}
+          onClose={() => setChatbotOpen(false)}
+          profileName={name} // Pass the dynamic name to the chatbot
+        />
 
+        {/* Floating Action Button to open Chatbot */}
+        {!chatbotOpen && (
+          <Fab
+            color="primary"
+            aria-label="chat"
+            sx={{
+              position: 'fixed',
+              bottom: 20,
+              right: 20,
+              bgcolor: theme.palette.primary.main, // Use theme primary color
+              '&:hover': {
+                bgcolor: theme.palette.primary.dark, // Darken on hover
+              },
+              zIndex: 1200, // Slightly lower than chatbot window
+            }}
+            onClick={() => setChatbotOpen(true)}
+          >
+            <ChatIcon />
+          </Fab>
+        )}
+
+s
         {/* Dialog for Know More */}
         {dialogContent && (
           <ReusableDialog
