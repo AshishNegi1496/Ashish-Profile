@@ -8,7 +8,7 @@ MODEL_NAME = "llama3:8b"
 def generate_reply(prompt: str, user_id: str = "default_user") -> str:
     print("✅ generate_reply called")
 
-    # Fetch recent chat history
+    # Fetch stored chat
     history_cursor = chat_history_collection.find({"user_id": user_id}).sort("timestamp", -1).limit(5)
     history = list(history_cursor)
 
@@ -27,7 +27,7 @@ def generate_reply(prompt: str, user_id: str = "default_user") -> str:
 
     full_prompt = f"{profile_str}\nConversation:\n{context}\nUser: {prompt}\nAssistant:"
 
-    # Call Ollama
+    # Call model
     response = requests.post(
         OLLAMA_URL,
         json={"model": MODEL_NAME, "prompt": full_prompt, "stream": False}
@@ -42,7 +42,7 @@ def generate_reply(prompt: str, user_id: str = "default_user") -> str:
     result = response.json()
     reply = result.get("response")
 
-    # Save to MongoDB
+    # Save to DB
     chat_history = {
         "user_id": user_id,
         "question": prompt,

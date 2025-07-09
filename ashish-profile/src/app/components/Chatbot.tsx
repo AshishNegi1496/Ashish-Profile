@@ -48,8 +48,12 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, profileName }) => {
     try {
       const data = await postChat(text);
       setMessages(m => [...m, { sender: 'bot', text: data.reply || "I'm sorry, I couldn't generate a response." }]);
-    } catch (e: any) {
-      setMessages(m => [...m, { sender: 'bot', text: `Error: ${e.message}` }]);
+    } catch (e: unknown) {
+      let errorMessage = "An unknown error occurred.";
+      if (e instanceof Error) {
+        errorMessage = e.message;
+      }
+      setMessages(m => [...m, { sender: 'bot', text: `Error: ${errorMessage}` }]);
     } finally { setLoading(false); }
   }, []);
 
@@ -65,12 +69,12 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, profileName }) => {
       }}>
         {/* Header */}
         <Box sx={{
-          p: 2, bgcolor: 'primary.main', color: 'primary.contrastText',
+          p: 2, bgcolor: 'black', color: 'primary.contrastText',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between'
         }}>
-          <SmartToyIcon sx={{ fontSize: 28 }} />
+          <SmartToyIcon sx={{ fontSize: 28, bgcolor: 'black', color: 'primary.contrastText' }} />
           <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 600 }}>
-            {profileName}'s AI Assistant
+           DevNix Assistant
           </Typography>
           <IconButton size="small" onClick={onClose} color="inherit"><CloseIcon /></IconButton>
         </Box>
@@ -81,7 +85,7 @@ const Chatbot: React.FC<ChatbotProps> = ({ isOpen, onClose, profileName }) => {
               display: 'flex', justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start', mb: 1.5
             }}>
               {msg.sender === 'bot' && (
-                <Avatar sx={{ bgcolor: 'primary.light', mr: 1, width: 32, height: 32 }}>
+                <Avatar sx={{ bgcolor: 'black', mr: 1, width: 32, height: 32 }}>
                   <SmartToyIcon fontSize="small" />
                 </Avatar>
               )}
