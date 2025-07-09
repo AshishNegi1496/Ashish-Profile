@@ -1,9 +1,7 @@
 'use client';
 import Link from "next/link";
-import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { useProfiles } from "../lib/fetcher";
 import { useState } from "react";
 import { useAuthStore } from "@/app/store/useAuthStore";
 import LoginIcon from "@mui/icons-material/Login";
@@ -17,10 +15,10 @@ const navLinks = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const { token, username, logout } = useAuthStore();
+  const { token, logout } = useAuthStore();
 
-  const { profiles } = useProfiles();
-  const profile = profiles && profiles.length > 0 ? profiles[0] : null;
+  // const { profiles } = useProfiles();
+  // const profile = profiles && profiles.length > 0 ? profiles[0] : null;
 
 
  const handleLogout = () => {

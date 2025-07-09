@@ -55,6 +55,7 @@ export type Experience = {
 };
 
 export type Certification = {
+   id: string;
   name: string;
   issuer: string;
   issue_date: string;
@@ -62,7 +63,7 @@ export type Certification = {
 };
 
 export type Profile = {
-  id: string; // MongoDB ID as string
+  id: string; 
   name: string;
   email?: string;
   phone?: string;

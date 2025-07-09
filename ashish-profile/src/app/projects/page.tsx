@@ -1,8 +1,7 @@
 'use client';
 
 import useSWR from 'swr';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import ProjectCard from '@/app/components/ProjectCard';
 import { fetcher } from '@/app/lib/fetcher';
 import Loader from '@/app/components/Loader';
@@ -34,9 +33,9 @@ export default function ProjectsPage() {
 );
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-    const { token, username, logout } = useAuthStore();
+    const { token } = useAuthStore();
 
-  const router = useRouter();
+  // const router = useRouter();
 
 
 

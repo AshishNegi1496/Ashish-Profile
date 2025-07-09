@@ -17,7 +17,7 @@ import {
   useTheme,
   Chip,
   Stack,
-    Fab,
+  Fab,
 } from "@mui/material";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -29,19 +29,27 @@ import ReusableDialog from "./components/ReusableDialog";
 import Chatbot from "./components/Chatbot";
 import ChatIcon from '@mui/icons-material/Chat';
 
-const profileImg =
+const altImg =
   "https://lh3.googleusercontent.com/aida-public/AB6AXuBtUlfdm1JH2SjTck8lbNVEuEGEMLJgbe8RNkfrKpuG25vi8GCC1UxQgfBgc2YBxmcuzgMeStW7KYEe7CUI2nQi5J9937h_bb87eML-4wtgA4SpV_zqdTM6MebiPb_e2Me5EPgjyqV1lJVqg0R2uBJ4jO1tqBskw90lW1csityH4W5F8uA_y8F0g95QM0yIDyRT_EXDMsEU1RD8VhfBplwQKEzAFbaggcyRe2wqNSbh1iXXQvDWrQzWkJ1kQ7ELqDjLIO4aGBMzwas";
 
 export default function HomePage() {
   const theme = useTheme();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState<{ title: string; content: React.ReactNode } | null>(null);
-   const [chatbotOpen, setChatbotOpen] = useState(false);
+  const [chatbotOpen, setChatbotOpen] = useState(false);
   const { profiles, loading } = useProfiles();
   const profile = profiles?.[0] || {};
   const name = profile.name || "Ashish Negi";
 
   if (loading) return <Loader />;
+
+  interface Experience {
+    title: string;
+    company: string;
+    start_date: string;
+    end_date?: string;
+    description?: string;
+  }
 
   const cardData = [
     {
@@ -66,7 +74,7 @@ export default function HomePage() {
       showKnowMore: Array.isArray(profile.experience) && profile.experience.length > 0,
       content: (
         <Stack spacing={2}>
-          {profile.experience?.map((exp: any, i: number) => (
+          {profile.experience?.map((exp: Experience, i: number) => (
             <Box key={i}>
               <Typography fontWeight={700}>{exp.title}</Typography>
               <Typography variant="body2" color="text.secondary">
@@ -78,6 +86,8 @@ export default function HomePage() {
         </Stack>
       ),
     },
+
+
     {
       title: "Certifications",
       desc: Array.isArray(profile.certifications) && profile.certifications.length > 0
@@ -86,7 +96,7 @@ export default function HomePage() {
       showKnowMore: Array.isArray(profile.certifications) && profile.certifications.length > 0,
       content: (
         <Stack spacing={1}>
-          {profile.certifications?.map((cert: any, i: number) => (
+          {profile.certifications?.map((cert: { name: string; issuer: string; issue_date: string; credential_url?: string }, i: number) => (
             <Box key={i}>
               <Typography fontWeight={600} variant="body2">{cert.name}</Typography>
               <Typography variant="caption" color="text.secondary">
@@ -102,6 +112,11 @@ export default function HomePage() {
         </Stack>
       ),
     },
+
+
+
+
+
     {
       title: "Languages",
       desc: Array.isArray(profile.languages) && profile.languages.length > 0
@@ -110,43 +125,43 @@ export default function HomePage() {
       showKnowMore: Array.isArray(profile.languages) && profile.languages.length > 0,
       content: <Typography variant="body2">{profile.languages?.join(", ")}</Typography>,
     },
-   {
-  title: "Passions",
-  desc: "Esports, Cricket, Lawn Tennis, Photography, Cooking, Travelling, Learning new technology, and many more. You can find some of my moments and clicks in the Gallery section.",
-  showKnowMore: true,
-  content: (
-    <>
-      <List
-        sx={{
-          listStyleType: 'disc',
-          pl: 2,
-          mb: 1,
-          '& .MuiListItem-root': {
-            display: 'list-item',
-            color: 'black',
-            fontSize: '1rem',
-            py: 0,
-          },
-        }}
-      >
-        <ListItem>Esports</ListItem>
-        <ListItem>Cricket</ListItem>
-        <ListItem>Lawn Tennis</ListItem>
-        <ListItem>Photography</ListItem>
-        <ListItem>Cooking</ListItem>
-        <ListItem>Travelling</ListItem>
-        <ListItem>Learning New Technology</ListItem>
-      </List>
-      <Typography variant="body2">
-        ...and many more! Check out the{' '}
-        <Link href="/gallery" color="primary" >
-          Gallery
-        </Link>{' '}
-        for pictures.
-      </Typography>
-    </>
-  ),
-}
+    {
+      title: "Passions",
+      desc: "Esports, Cricket, Lawn Tennis, Photography, Cooking, Travelling, Learning new technology, and many more. You can find some of my moments and clicks in the Gallery section.",
+      showKnowMore: true,
+      content: (
+        <>
+          <List
+            sx={{
+              listStyleType: 'disc',
+              pl: 2,
+              mb: 1,
+              '& .MuiListItem-root': {
+                display: 'list-item',
+                color: 'black',
+                fontSize: '1rem',
+                py: 0,
+              },
+            }}
+          >
+            <ListItem>Esports</ListItem>
+            <ListItem>Cricket</ListItem>
+            <ListItem>Lawn Tennis</ListItem>
+            <ListItem>Photography</ListItem>
+            <ListItem>Cooking</ListItem>
+            <ListItem>Travelling</ListItem>
+            <ListItem>Learning New Technology</ListItem>
+          </List>
+          <Typography variant="body2">
+            ...and many more! Check out the{' '}
+            <Link href="/gallery" color="primary" >
+              Gallery
+            </Link>{' '}
+            for pictures.
+          </Typography>
+        </>
+      ),
+    }
   ];
 
   const handleKnowMore = (title: string) => {
@@ -185,7 +200,7 @@ export default function HomePage() {
                 {profile.position || "Project Engineer"}
               </Typography>
               <Typography variant="h2" fontWeight={700} color="text.primary" gutterBottom sx={{ lineHeight: 1.1 }}>
-                I'm {name}
+                I am {name}
               </Typography>
               <Typography color="text.secondary" sx={{ maxWidth: 480, mb: 3 }}>
                 {profile.summary ||
@@ -210,9 +225,18 @@ export default function HomePage() {
                 </Button>
               </Link>
             </Grid>
-            <Grid xs={12} md={6} sx={{ display: "flex", justifyContent: "center" }}>
+
+
+            <div
+              style={{
+                maxWidth: "100%",
+                display: "flex",
+                justifyContent: "center",
+                boxSizing: "border-box",
+              }}
+            >
               <Avatar
-                src={profile?.image || profileImg}
+                src={profile?.profileImage || altImg}
                 alt={name}
                 sx={{
                   width: 320,
@@ -222,7 +246,9 @@ export default function HomePage() {
                   objectFit: "cover",
                 }}
               />
-            </Grid>
+            </div>
+
+
           </Grid>
 
           {/* Cards Section */}
@@ -293,7 +319,7 @@ export default function HomePage() {
             ))}
           </Grid>
         </Container>
-<Chatbot
+        <Chatbot
           isOpen={chatbotOpen}
           onClose={() => setChatbotOpen(false)}
           profileName={name} // Pass the dynamic name to the chatbot
@@ -320,7 +346,7 @@ export default function HomePage() {
           </Fab>
         )}
 
-s
+        s
         {/* Dialog for Know More */}
         {dialogContent && (
           <ReusableDialog

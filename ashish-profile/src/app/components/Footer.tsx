@@ -2,7 +2,6 @@
 "use client";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useProfiles } from "../lib/fetcher";
 import EmailIcon from "@mui/icons-material/Email";
@@ -11,8 +10,7 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import {
   IconButton,
-  Link as MuiLink,
-
+  CircularProgress,
 } from "@mui/material";
 interface FooterProps {
   name?: string;
@@ -21,6 +19,9 @@ interface FooterProps {
 export default function Footer({ name }: FooterProps) {
     const { profiles, loading } = useProfiles();
       const profile = profiles?.[0] || {};
+      if (loading) {
+        return <><CircularProgress /></>; 
+      }
   return (
 
      <Box component="footer" sx={{ backgroundColor: "#fff" }}>

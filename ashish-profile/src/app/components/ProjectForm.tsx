@@ -47,7 +47,7 @@ export default function ProjectForm() {
         highlights: '',
         imageUrl: ''
       });
-    } catch (err) {
+    } catch {
       alert('Submission failed');
     } finally {
       setSubmitting(false);

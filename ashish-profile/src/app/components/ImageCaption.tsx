@@ -5,11 +5,9 @@ import {
   Button,
   Box,
   Typography,
-  TextField,
   CircularProgress,
   Paper,
   Alert,
-  Input
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
@@ -54,9 +52,13 @@ export default function ImageCaption() {
 
       const data = await res.json();
       setCaption(data.caption);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Upload error:', err);
-      setError(err.message || 'An unexpected error occurred while generating the caption.');
+      let errorMessage = 'An unexpected error occurred while generating the caption.';
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+      setError(errorMessage);
       setCaption(null);
     } finally {
       setLoading(false);
@@ -89,7 +91,7 @@ export default function ImageCaption() {
           sx={{ alignSelf: 'center' }}
         >
           {selectedFile ? selectedFile.name : 'Choose Image'}
-          <Input type="file" accept="image/*" onChange={handleFileChange} sx={{ display: 'none' }} />
+          <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
         </Button>
         {selectedFile && (
           <Typography variant="body2" color="text.secondary" align="center">
