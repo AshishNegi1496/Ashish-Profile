@@ -346,8 +346,7 @@ export default function HomePage() {
           </Fab>
         )}
 
-        s
-        {/* Dialog for Know More */}
+        
         {dialogContent && (
           <ReusableDialog
             open={dialogOpen}
