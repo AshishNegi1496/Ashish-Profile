@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, HttpUrl
 from typing import List, Optional
-
+from datetime import datetime
 class Education(BaseModel):
     degree: str
     institution: str
@@ -39,3 +39,12 @@ class Profile(BaseModel):
     skills: Optional[List[str]] = []
     certifications: Optional[List[Certification]] = []
     languages: Optional[List[str]] = []
+
+
+
+
+class ChatHistory(BaseModel):
+    user_id: Optional[str]  # If login system exists
+    question: str
+    response: str
+    timestamp: datetime = datetime.now()

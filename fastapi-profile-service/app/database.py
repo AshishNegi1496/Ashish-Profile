@@ -12,3 +12,5 @@ client = MongoClient(MONGO_URI)
 db = client[DB_NAME]
 
 profile_collection = db.get_collection("profiles")
+
+chat_history_collection = db.get_collection("chat_history")
