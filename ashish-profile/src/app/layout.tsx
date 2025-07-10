@@ -6,7 +6,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <title>Never Settle</title>
+        <title>Dev Nix</title>
         <meta name="description" content="Personal portfolio of Ashish Negi - Full-stack developer." />
         <link rel="icon" href="/favicon.png" />
       </head>
