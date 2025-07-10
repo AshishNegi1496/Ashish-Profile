@@ -24,31 +24,31 @@ export default function Footer({ name }: FooterProps) {
       }
   return (
 
-     <Box component="footer" sx={{ backgroundColor: "#fff" }}>
+     <Box component="footer" sx={{ backgroundColor: "#0F172A" }}>
         <Container  maxWidth="md">
           <Box sx={{ display: "flex", justifyContent: "center", gap: 4, mb: 3 }}>
             {profile.email && (
               <IconButton color="inherit" href={`mailto:${profile.email}`} aria-label="Email">
-                <EmailIcon sx={{ color: "text.secondary", "&:hover": { color: "text.primary" } }} />
+                <EmailIcon sx={{ color: "white", "&:hover": { color: "text.primary" } }} />
               </IconButton>
             )}
             {profile.linkedin && (
               <IconButton color="inherit" href={profile.linkedin} aria-label="LinkedIn" target="_blank">
-                <LinkedInIcon sx={{ color: "text.secondary", "&:hover": { color: "text.primary" } }} />
+                <LinkedInIcon sx={{ color: "white", "&:hover": { color: "text.primary" } }} />
               </IconButton>
             )}
             {profile.github && (
               <IconButton color="inherit" href={profile.github} aria-label="GitHub" target="_blank">
-                <GitHubIcon sx={{ color: "text.secondary", "&:hover": { color: "text.primary" } }} />
+                <GitHubIcon sx={{ color: "white", "&:hover": { color: "text.primary" } }} />
               </IconButton>
             )}
             {profile.location && (
               <IconButton color="inherit" disabled aria-label="Location">
-                <LocationOnIcon sx={{ color: "text.secondary", "&:hover": { color: "text.primary" } }} />
+                <LocationOnIcon sx={{ color: "white", "&:hover": { color: "text.primary" } }} />
               </IconButton>
             )}
           </Box>
-          <Typography variant="body2" color="text.secondary" align="center">
+          <Typography variant="body2" color="white" align="center">
             © 2024 {name}. All rights reserved.
           </Typography>
         </Container>

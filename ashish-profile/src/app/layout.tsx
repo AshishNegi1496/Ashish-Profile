@@ -20,7 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </div>
 
         {/* Main with 90% height */}
-        <main style={{ height: '90vh', overflowY: 'auto' }} className="bg-[#101323] relative z-10">
+        <main style={{ height: '90vh', overflowY: 'auto' }} className="bg-[#101323] relative z-10 scrollbar-none">
           {children}
         </main>
 

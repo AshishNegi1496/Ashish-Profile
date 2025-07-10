@@ -19,7 +19,7 @@ def get_profile(id: str):
         raise HTTPException(status_code=404, detail="Profile not found")
     return profile_helper(profile)
 
-@router.get("/")
+@router.get("")
 def list_profiles():
     return [profile_helper(p) for p in profile_collection.find()]
 
