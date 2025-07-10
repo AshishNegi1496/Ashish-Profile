@@ -9,6 +9,9 @@ app.add_middleware(
     CORSMiddleware,
     # allow_origins=["*"], 
      allow_origins=[
+         	"https://ashishnegi.up.railway.app",
+          "https://ashishnegi.vercel.app",
+          	"https://ashishnegi.up.railway.app/",
           "https://ashishnegi.vercel.app/",
           "http://10.208.10.157:8000/api/profiles",
           "http://localhost:3001",
