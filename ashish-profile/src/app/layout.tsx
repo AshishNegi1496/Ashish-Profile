@@ -1,34 +1,40 @@
-import './globals.css'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
+'use client';
+import './globals.css';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import { ThemeProvider } from './context/ThemeContext';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <title>Dev Nix</title>
-        <meta name="description" content="Personal portfolio of Ashish Negi - Full-stack developer." />
+        <meta name="description" content="Portfolio of Ashish Negi" />
         <link rel="icon" href="/favicon.png" />
+
+         <script
+    dangerouslySetInnerHTML={{
+      __html: `
+        (function() {
+          try {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              document.documentElement.classList.add('dark');
+            }
+          } catch(e) {}
+        })();
+      `,
+    }}
+  />
       </head>
-      <body className="bg-blue-900 text-neutral-900 min-h-screen flex flex-col overflow-hidden">
-        {/* Background layer */}
-        <div className="absolute inset-0 -z-10 bg-white/30 backdrop-blur-sm" />
-
-        {/* Navbar with 5% height */}
-        <div style={{ height: '4vh', flexShrink: 0 }}>
+      <body className="bg-background text-foreground min-h-screen font-[Poppins,sans-serif]">
+        
+        <ThemeProvider>
           <Navbar />
-        </div>
-
-        {/* Main with 90% height */}
-        <main style={{ height: '90vh', overflowY: 'auto' }} className="bg-[#101323] relative z-10 scrollbar-none">
-          {children}
-        </main>
-
-        {/* Footer with 5% height */}
-        <div style={{ height: '20vh', flexShrink: 0 }}>
+          <main className="flex-1 relative z-10">{children}</main>
           <Footer />
-        </div>
+        </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

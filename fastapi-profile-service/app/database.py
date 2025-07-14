@@ -6,7 +6,7 @@ from pymongo.errors import ConnectionFailure
 
 load_dotenv()
 
-MONGO_URI = os.getenv("MONGO_URL")
+MONGO_URI = os.getenv("MONGO_URI")
 DB_NAME = os.getenv("DB_NAME","profile_db")
 
 if not MONGO_URI:

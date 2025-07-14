@@ -1,45 +1,96 @@
+
+
+
 @import "tailwindcss";
 
 :root {
+  /* Light theme colors */
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #1e293b;
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+  --accent: #f43f5e;
+  --accent-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #3b82f6;
+  --radius: 0.5rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  /* Dark theme colors */
+  --background: #1f0d30;
+  --foreground: #ededed;
+  --primary: #60a5fa;
+  --primary-foreground: #0f172a;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #fb7185;
+  --accent-foreground: #ffffff;
+  --border: #1e293b;
+  --input: #1e293b;
+  --ring: #60a5fa;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+
+
+/* Animation styles */
+.animate-fade-in-down {
+  animation: fade-in-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fade-in-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Optional: Base styles for better consistency */
+*, *::before, *::after {
+  border-color: var(--border);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-feature-settings: "rlig" 1, "calt" 1;
 }
 
- .animate-fade-in-down {
-   animation: fade-in-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
- }
- @keyframes fade-in-down {
-   from { opacity: 0; transform: translateY(-10px); }
-   to { opacity: 1; transform: translateY(0); }
- }
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
 
- .heading-1 { @apply text-5xl md:text-6xl font-serif font-bold italic drop-shadow-lg; }
-.heading-2 { @apply text-3xl md:text-4xl font-bold ; }
-.heading-3 { @apply text-xl md:text-2xl font-bold ; }
-.subheading { @apply text-lg md:text-xl font-medium; }
-.body-text { @apply text-xl md:text-2xl font-light ; }
-.label { @apply text-base md:text-lg font-semibold text-neutral-900; }
-.caption { @apply text-sm md:text-base text-neutral-800; }
-.mono-clock { @apply text-3xl md:text-4xl font-mono bg-black/60 text-white px-6 py-2 rounded-lg shadow-lg tracking-widest; }
 
- 
+
+/* 🌐 Button theme variants */
+.btn-primary {
+  @apply inline-block px-10 py-4 rounded-full font-semibold transition-transform transform shadow-lg;
+  background-image: linear-gradient(to right, var(--btn-gradient-from), var(--btn-gradient-to));
+  color: var(--btn-text);
+}
+
+.btn-primary:hover {
+  @apply scale-105;
+}
+
+/* Theme-specific colors */
+:root {
+  --btn-gradient-from: #392c46;  /* purple-500 */
+  --btn-gradient-to: #3b82f6;    /* blue-500 */
+  --btn-text: #ffffff;
+}
+
+.dark {
+  --btn-gradient-from: #8b5cf6;  /* lighter purple for dark mode */
+  --btn-gradient-to: #60a5fa;    /* light blue */
+  --btn-text: #ffffff;
+}
+
+

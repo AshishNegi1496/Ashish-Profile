@@ -1,5 +1,5 @@
-
 "use client";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -12,47 +12,75 @@ import {
   IconButton,
   CircularProgress,
 } from "@mui/material";
+
 interface FooterProps {
   name?: string;
 }
 
 export default function Footer({ name }: FooterProps) {
-    const { profiles, loading } = useProfiles();
-      const profile = profiles?.[0] || {};
-      if (loading) {
-        return <><CircularProgress /></>; 
-      }
-  return (
+  const { profiles, loading } = useProfiles();
+  const profile = profiles?.[0] || {};
 
-     <Box component="footer" sx={{ backgroundColor: "#0F172A" }}>
-        <Container  maxWidth="md">
-          <Box sx={{ display: "flex", justifyContent: "center", gap: 4, mb: 3 }}>
-            {profile.email && (
-              <IconButton color="inherit" href={`mailto:${profile.email}`} aria-label="Email">
-                <EmailIcon sx={{ color: "white", "&:hover": { color: "text.primary" } }} />
-              </IconButton>
-            )}
-            {profile.linkedin && (
-              <IconButton color="inherit" href={profile.linkedin} aria-label="LinkedIn" target="_blank">
-                <LinkedInIcon sx={{ color: "white", "&:hover": { color: "text.primary" } }} />
-              </IconButton>
-            )}
-            {profile.github && (
-              <IconButton color="inherit" href={profile.github} aria-label="GitHub" target="_blank">
-                <GitHubIcon sx={{ color: "white", "&:hover": { color: "text.primary" } }} />
-              </IconButton>
-            )}
-            {profile.location && (
-              <IconButton color="inherit" disabled aria-label="Location">
-                <LocationOnIcon sx={{ color: "white", "&:hover": { color: "text.primary" } }} />
-              </IconButton>
-            )}
-          </Box>
-          <Typography variant="body2" color="white" align="center">
-            © 2024 {name}. All rights reserved.
-          </Typography>
-        </Container>
-      </Box>
-  
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-4 bg-background">
+        <CircularProgress size={20} />
+      </div>
+    );
+  }
+
+  return (
+    <Box component="footer" className="bg-background border-t border-border py-6">
+      <Container maxWidth="md">
+        <Box className="flex justify-center gap-4 mb-4">
+          {profile.email && (
+            <IconButton
+              href={`mailto:${profile.email}`}
+              aria-label="Email"
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              <EmailIcon />
+            </IconButton>
+          )}
+          {profile.linkedin && (
+            <IconButton
+              href={profile.linkedin}
+              aria-label="LinkedIn"
+              target="_blank"
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              <LinkedInIcon />
+            </IconButton>
+          )}
+          {profile.github && (
+            <IconButton
+              href={profile.github}
+              aria-label="GitHub"
+              target="_blank"
+              className="text-muted-foreground"
+            >
+              <GitHubIcon />
+            </IconButton>
+          )}
+          {profile.location && (
+            <IconButton
+              disabled
+              aria-label="Location"
+              className="text-muted-foreground"
+            >
+              <LocationOnIcon />
+            </IconButton>
+          )}
+        </Box>
+
+        <Typography
+          variant="body2"
+          align="center"
+          className="text-muted-foreground"
+        >
+          © 2024 {name}. All rights reserved.
+        </Typography>
+      </Container>
+    </Box>
   );
 }
